@@ -22,13 +22,22 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; overflow-x: hidden; overscroll-x: none; }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: var(--sans);
       background: var(--bg);
       color: var(--text);
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Site wrapper — the only reliable way to kill horizontal scroll on iOS Safari */
+    .site-wrapper {
+      width: 100%;
+      position: relative;
       overflow-x: hidden;
+      overscroll-x: none;
     }
 
     /* Custom cursor */
@@ -779,6 +788,7 @@
         left: 0;
         right: 0;
         bottom: 0;
+        width: 100%;
         background: rgba(8,12,16,0.97);
         backdrop-filter: blur(20px);
         flex-direction: column;
@@ -793,7 +803,6 @@
                     visibility 0.3s,
                     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
         z-index: 150;
-        width: 100%;
         overflow-y: auto;
       }
       .nav-links.open {
@@ -828,12 +837,10 @@
   <!-- Skip navigation link for keyboard users (WCAG 2.4.1) -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
+  <div class="site-wrapper">
   <!-- Decorative elements hidden from screen readers -->
   <div class="cursor" id="cursor" aria-hidden="true"></div>
   <div class="cursor-ring" id="cursorRing" aria-hidden="true"></div>
-
-  <div class="orb orb-1" aria-hidden="true"></div>
-  <div class="orb orb-2" aria-hidden="true"></div>
 
   <!-- NAV -->
   <nav aria-label="Main navigation">
@@ -858,6 +865,8 @@
 
   <!-- HERO -->
   <header class="hero" id="home">
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
     <div class="hero-inner">
       <div class="hero-eyebrow">// full-stack engineer · lagos, nigeria</div>
       <h1 class="hero-name">Victor<br/><span class="dim">Nwulu</span></h1>
@@ -1098,6 +1107,8 @@
     <p>Victor Nwulu <span>·</span> Lagos, Nigeria <span>·</span> 2026</p>
   
   </footer>
+
+  </div><!-- /.site-wrapper -->
 
   <script>
     // Mobile nav toggle
