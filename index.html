@@ -6,18 +6,59 @@
   <meta name="description" content="Victor Nwulu — Full-Stack Engineer based in Lagos, Nigeria. Specializing in React, Next.js, Node.js, PostgreSQL, and full-stack web applications." />
   <title>Victor Nwulu — Full-Stack Engineer</title>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Outfit:wght@200;300;400;600&display=swap" rel="stylesheet"/>
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || (!t && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
   <style>
     :root {
       --bg: #080c10;
       --bg2: #0d1117;
       --border: rgba(255,255,255,0.07);
       --text: #e2e8f0;
+      --text-primary: #ffffff;
       --muted: #94a3b8;
       --accent: #00d4ff;
       --accent2: #7c3aed;
       --green: #00ff88;
+      --card-bg: rgba(255,255,255,0.04);
+      --card-hover: rgba(0,212,255,0.04);
+      --nav-bg: rgba(8,12,16,0.8);
+      --nav-mobile-bg: rgba(8,12,16,0.97);
+      --grid-line: rgba(0,212,255,0.03);
+      --noise-opacity: 0.4;
+      --orb1: rgba(0,212,255,0.06);
+      --orb2: rgba(124,58,237,0.08);
       --mono: 'JetBrains Mono', monospace;
       --sans: 'Outfit', sans-serif;
+      --theme-toggle-bg: rgba(255,255,255,0.06);
+      --theme-toggle-hover: rgba(255,255,255,0.1);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --border: rgba(0,0,0,0.08);
+      --text: #334155;
+      --text-primary: #0f172a;
+      --muted: #64748b;
+      --accent: #0891b2;
+      --accent2: #7c3aed;
+      --green: #059669;
+      --card-bg: rgba(0,0,0,0.03);
+      --card-hover: rgba(8,145,178,0.06);
+      --nav-bg: rgba(248,250,252,0.85);
+      --nav-mobile-bg: rgba(248,250,252,0.97);
+      --grid-line: rgba(8,145,178,0.06);
+      --noise-opacity: 0.15;
+      --orb1: rgba(8,145,178,0.08);
+      --orb2: rgba(124,58,237,0.06);
+      --theme-toggle-bg: rgba(0,0,0,0.06);
+      --theme-toggle-hover: rgba(0,0,0,0.1);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -98,13 +139,14 @@
 
     .skip-link:focus {
       top: 16px;
-      outline: 3px solid #fff;
+      outline: 3px solid var(--text-primary);
       outline-offset: 3px;
       box-shadow: 0 8px 32px rgba(0,212,255,0.5);
     }
 
     .skip-link:hover {
-      background: #fff;
+      background: var(--text-primary);
+      color: var(--bg);
       box-shadow: 0 8px 32px rgba(0,212,255,0.5);
     }
 
@@ -176,7 +218,7 @@
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
       pointer-events: none;
       z-index: 1;
-      opacity: 0.4;
+      opacity: var(--noise-opacity);
     }
 
     /* Grid background */
@@ -185,8 +227,8 @@
       position: fixed;
       inset: 0;
       background-image:
-        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: 48px 48px;
       pointer-events: none;
       z-index: 0;
@@ -201,7 +243,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(8,12,16,0.8);
+      background: var(--nav-bg);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
@@ -241,6 +283,12 @@
     .nav-links a:hover { color: var(--text); }
     .nav-links a:hover::before { opacity: 1; }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .nav-status {
       display: flex;
       align-items: center;
@@ -249,6 +297,43 @@
       font-size: 11px;
       color: var(--muted);
     }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: var(--theme-toggle-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle:hover {
+      background: var(--theme-toggle-hover);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+      transition: opacity 0.2s, transform 0.3s;
+    }
+
+    [data-theme="light"] .theme-toggle .icon-sun { display: none; }
+    :root:not([data-theme="light"]) .theme-toggle .icon-moon { display: none; }
 
     .status-dot {
       width: 6px; height: 6px;
@@ -305,7 +390,7 @@
       font-weight: 600;
       line-height: 1.0;
       letter-spacing: -2px;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 16px;
       opacity: 0;
       animation: fadeUp 0.6s 0.35s forwards;
@@ -337,7 +422,7 @@
     .hero-desc {
       font-size: 16px;
       font-weight: 300;
-      color: #94a3b8;
+      color: var(--muted);
       max-width: 520px;
       line-height: 1.8;
       margin-bottom: 48px;
@@ -371,8 +456,12 @@
     }
 
     .btn-primary:hover {
-      background: #fff;
+      background: var(--text-primary);
       box-shadow: 0 0 24px rgba(0,212,255,0.4);
+    }
+
+    [data-theme="light"] .btn-primary:hover {
+      box-shadow: 0 0 24px rgba(8,145,178,0.3);
     }
 
     .btn-ghost {
@@ -396,14 +485,14 @@
 
     .orb-1 {
       width: 400px; height: 400px;
-      background: rgba(0,212,255,0.06);
+      background: var(--orb1);
       top: 10%; right: -100px;
       animation: float 8s ease-in-out infinite;
     }
 
     .orb-2 {
       width: 300px; height: 300px;
-      background: rgba(124,58,237,0.08);
+      background: var(--orb2);
       bottom: 20%; left: -80px;
       animation: float 10s ease-in-out infinite reverse;
     }
@@ -438,7 +527,7 @@
       font-size: clamp(28px, 4vw, 42px);
       font-weight: 600;
       letter-spacing: -1px;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 56px;
     }
 
@@ -456,12 +545,12 @@
     .about-text p {
       font-size: 15px;
       font-weight: 300;
-      color: #94a3b8;
+      color: var(--muted);
       line-height: 1.9;
       margin-bottom: 16px;
     }
 
-    .about-text p strong { color: var(--text); font-weight: 400; }
+    .about-text p strong { color: var(--text-primary); font-weight: 400; }
 
     .about-stats {
       display: grid;
@@ -477,7 +566,7 @@
       transition: background 0.2s;
     }
 
-    .stat-card:hover { background: rgba(0,212,255,0.04); }
+    .stat-card:hover { background: var(--card-hover); }
 
     .stat-number {
       font-family: var(--mono);
@@ -510,7 +599,7 @@
     .skill-card {
       background: var(--bg);
       padding: 32px 28px;
-      transition: background 0.2s;
+      transition: background 0.3s, border-color 0.3s;
       position: relative;
       overflow: hidden;
     }
@@ -526,7 +615,7 @@
       transition: transform 0.3s;
     }
 
-    .skill-card:hover { background: rgba(0,212,255,0.03); }
+    .skill-card:hover { background: var(--card-hover); }
     .skill-card:hover::before { transform: scaleX(1); }
 
     .skill-icon {
@@ -540,7 +629,7 @@
     .skill-name {
       font-size: 15px;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 12px;
     }
 
@@ -554,7 +643,7 @@
       font-family: var(--mono);
       font-size: 10px;
       padding: 3px 8px;
-      background: rgba(255,255,255,0.04);
+      background: var(--card-bg);
       border: 1px solid var(--border);
       color: var(--muted);
       border-radius: 2px;
@@ -596,7 +685,7 @@
       transition: opacity 0.3s;
     }
 
-    .project-card:hover { background: #0f1923; }
+    .project-card:hover { background: var(--card-hover); }
     .project-card:hover::after { opacity: 1; }
 
     .project-number {
@@ -609,7 +698,7 @@
     .project-title {
       font-size: 20px;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 12px;
       letter-spacing: -0.3px;
     }
@@ -617,7 +706,7 @@
     .project-desc {
       font-size: 13.5px;
       font-weight: 300;
-      color: #94a3b8;
+      color: var(--muted);
       line-height: 1.8;
       margin-bottom: 20px;
     }
@@ -681,7 +770,7 @@
     .exp-role {
       font-size: 16px;
       font-weight: 600;
-      color: #fff;
+      color: var(--text-primary);
       margin-bottom: 4px;
     }
 
@@ -695,7 +784,7 @@
     .exp-desc {
       font-size: 13.5px;
       font-weight: 300;
-      color: #94a3b8;
+      color: var(--muted);
       line-height: 1.8;
     }
 
@@ -712,7 +801,7 @@
     .contact-inner p {
       font-size: 15px;
       font-weight: 300;
-      color: #94a3b8;
+      color: var(--muted);
       line-height: 1.8;
       margin-bottom: 40px;
     }
@@ -789,7 +878,7 @@
         right: 0;
         bottom: 0;
         width: 100%;
-        background: rgba(8,12,16,0.97);
+        background: var(--nav-mobile-bg);
         backdrop-filter: blur(20px);
         flex-direction: column;
         justify-content: center;
@@ -857,9 +946,15 @@
       <li><a href="#experience">experience</a></li>
       <li><a href="#contact">contact</a></li>
     </ul>
-    <div class="nav-status" role="status" aria-label="Availability status">
-      <div class="status-dot" aria-hidden="true"></div>
-      <span>available for work</span>
+    <div class="nav-right">
+      <div class="nav-status" role="status" aria-label="Availability status">
+        <div class="status-dot" aria-hidden="true"></div>
+        <span>available for work</span>
+      </div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to light mode" title="Toggle theme">
+        <span class="icon-sun" aria-hidden="true">☀</span>
+        <span class="icon-moon" aria-hidden="true">☾</span>
+      </button>
     </div>
   </nav>
 
@@ -1236,6 +1331,42 @@
       setTimeout(type, deleting ? 40 : 80);
     }
     type();
+
+    // Theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+
+    function getPreferredTheme() {
+      const stored = localStorage.getItem('theme');
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+    }
+
+    function setTheme(theme) {
+      if (theme === 'light') {
+        html.setAttribute('data-theme', 'light');
+        themeToggle.setAttribute('aria-label', 'Switch to dark mode');
+      } else {
+        html.removeAttribute('data-theme');
+        themeToggle.setAttribute('aria-label', 'Switch to light mode');
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    // Apply stored or system theme immediately
+    setTheme(getPreferredTheme());
+
+    themeToggle.addEventListener('click', () => {
+      const current = html.getAttribute('data-theme');
+      setTheme(current === 'light' ? 'dark' : 'light');
+    });
+
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'light' : 'dark');
+      }
+    });
   </script>
 
 </body>
