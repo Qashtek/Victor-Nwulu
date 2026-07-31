@@ -298,6 +298,14 @@
       color: var(--muted);
     }
 
+    /* Smooth theme transition — only active during toggle */
+    .theme-transitioning,
+    .theme-transitioning *,
+    .theme-transitioning *::before,
+    .theme-transitioning *::after {
+      transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
+    }
+
     /* Theme toggle */
     .theme-toggle {
       background: var(--theme-toggle-bg);
@@ -867,8 +875,9 @@
 
     /* Responsive */
     @media (max-width: 768px) {
-      nav { padding: 16px 24px; }
-      .nav-toggle { display: flex; }
+      nav { padding: 16px 24px; justify-content: flex-start; }
+      .nav-toggle { display: flex; order: 2; }
+      .nav-right { margin-left: auto; margin-right: 8px; order: 1; }
       .nav-status { display: none; }
       .nav-links {
         display: flex;
@@ -1357,8 +1366,11 @@
     setTheme(getPreferredTheme());
 
     themeToggle.addEventListener('click', () => {
+      // Enable smooth transition during toggle
+      html.classList.add('theme-transitioning');
       const current = html.getAttribute('data-theme');
       setTheme(current === 'light' ? 'dark' : 'light');
+      setTimeout(() => html.classList.remove('theme-transitioning'), 400);
     });
 
     // Listen for system theme changes
